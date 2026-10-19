@@ -1,5 +1,7 @@
 # Heart Disease MLOps
 
+ML Ops assignment project: Heart Disease Classifier.
+
 Reproducible binary classification using the processed Cleveland subset of the UCI
 Heart Disease dataset. The API and evaluation artifacts are educational examples,
 not clinical decision support; the model must not be used to diagnose or treat patients.
