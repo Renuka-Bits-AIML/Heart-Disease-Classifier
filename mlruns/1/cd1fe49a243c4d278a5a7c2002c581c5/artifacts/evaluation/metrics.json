@@ -1,0 +1,99 @@
+{
+  "selected_model": "logistic_regression",
+  "selection_metric": "mean cross-validation ROC-AUC",
+  "cross_validation": {
+    "logistic_regression": {
+      "baseline": {
+        "accuracy": {
+          "mean": 0.8471088435374149,
+          "std": 0.009976921631744011
+        },
+        "precision": {
+          "mean": 0.8767529146045769,
+          "std": 0.054190324098361047
+        },
+        "recall": {
+          "mean": 0.783399209486166,
+          "std": 0.045917899546111016
+        },
+        "roc_auc": {
+          "mean": 0.9024931590148981,
+          "std": 0.013656728176443235
+        }
+      },
+      "tuned": {
+        "accuracy": {
+          "mean": 0.8471088435374149,
+          "std": 0.009976921631744011
+        },
+        "precision": {
+          "mean": 0.8767529146045769,
+          "std": 0.054190324098361047
+        },
+        "recall": {
+          "mean": 0.783399209486166,
+          "std": 0.045917899546111016
+        },
+        "roc_auc": {
+          "mean": 0.9024931590148981,
+          "std": 0.013656728176443235
+        }
+      },
+      "best_params": {
+        "classifier__C": 1.0
+      }
+    },
+    "random_forest": {
+      "baseline": {
+        "accuracy": {
+          "mean": 0.8181122448979592,
+          "std": 0.030707052733897906
+        },
+        "precision": {
+          "mean": 0.8172527472527472,
+          "std": 0.04053782620904721
+        },
+        "recall": {
+          "mean": 0.7826086956521738,
+          "std": 0.09810814927920464
+        },
+        "roc_auc": {
+          "mean": 0.8972036417688593,
+          "std": 0.029464537807694004
+        }
+      },
+      "tuned": {
+        "accuracy": {
+          "mean": 0.8139455782312925,
+          "std": 0.023501715386924468
+        },
+        "precision": {
+          "mean": 0.7975077086656034,
+          "std": 0.02924723782550505
+        },
+        "recall": {
+          "mean": 0.800790513833992,
+          "std": 0.0853370576632106
+        },
+        "roc_auc": {
+          "mean": 0.9013169600126121,
+          "std": 0.028605120048505277
+        }
+      },
+      "best_params": {
+        "classifier__max_depth": 10,
+        "classifier__min_samples_leaf": 2,
+        "classifier__n_estimators": 100
+      }
+    }
+  },
+  "holdout_metrics": {
+    "accuracy": 0.8852459016393442,
+    "precision": 0.8387096774193549,
+    "recall": 0.9285714285714286,
+    "roc_auc": 0.9664502164502166
+  },
+  "holdout_size": 61,
+  "training_rows": 303,
+  "model_path": "models\\heart_disease_pipeline.joblib"
+}

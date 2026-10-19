@@ -1,0 +1,39 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "heart-disease-mlops"
+version = "0.1.0"
+description = "Reproducible heart disease classification and serving pipeline"
+requires-python = ">=3.10"
+dependencies = [
+  "fastapi",
+  "joblib",
+  "matplotlib",
+  "mlflow",
+  "numpy",
+  "pandas",
+  "prometheus-client",
+  "scikit-learn",
+  "seaborn",
+  "uvicorn[standard]",
+]
+
+[project.optional-dependencies]
+dev = ["httpx", "pytest", "ruff"]
+report = ["python-docx"]
+
+[tool.setuptools]
+package-dir = {"" = "src"}
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["src"]
+
+[tool.ruff]
+line-length = 100
+target-version = "py310"

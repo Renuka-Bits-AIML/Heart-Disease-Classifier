@@ -1,0 +1,32 @@
+name: CI
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  quality-and-training:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+      - run: python -m pip install -r requirements.txt
+      - run: python -m pip install -e . --no-deps
+      - run: python -m heart_disease.data
+      - run: ruff check .
+      - run: pytest -q
+      - run: python -m heart_disease.train --cv-folds 5
+      - uses: actions/upload-artifact@v4
+        with:
+          name: training-artifacts
+          path: |
+            data/processed/cleveland_cleaned.csv
+            models/heart_disease_pipeline.joblib
+            reports/metrics.json
+            reports/model_comparison.csv
+            reports/figures/*.png
+            mlflow.db
+            mlartifacts/
