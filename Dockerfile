@@ -6,8 +6,8 @@ ENV PYTHONDONTWRITEBYTECODE=1 \
     PYTHONPATH=/app/src
 
 WORKDIR /app
-COPY src/ ./src/
 RUN pip install --no-cache-dir fastapi joblib pandas scikit-learn "uvicorn[standard]" prometheus-client
+COPY src/ ./src/
 COPY models/heart_disease_pipeline.joblib ./models/heart_disease_pipeline.joblib
 RUN useradd --create-home --uid 10001 appuser \
     && chown -R appuser:appuser /app

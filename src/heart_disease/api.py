@@ -18,6 +18,12 @@ MODEL_PATH = Path(os.environ.get("MODEL_PATH", ROOT / "models" / "heart_disease_
 PREDICTIONS = Counter("heart_disease_predictions_total", "Predictions served", ["prediction"])
 PREDICTION_SECONDS = Histogram("heart_disease_prediction_seconds", "Prediction latency")
 LOGGER = logging.getLogger("heart_disease.api")
+if not LOGGER.handlers:
+    # uvicorn configures only its own loggers, so INFO records would otherwise be dropped.
+    _handler = logging.StreamHandler()
+    _handler.setFormatter(logging.Formatter("%(levelname)s:     %(message)s"))
+    LOGGER.addHandler(_handler)
+    LOGGER.setLevel(logging.INFO)
 
 
 class HeartDiseaseFeatures(BaseModel):

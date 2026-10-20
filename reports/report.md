@@ -194,6 +194,12 @@ joblib pipeline artifact. A final evaluation run stores held-out metrics, the se
 pipeline artifact, metrics JSON, and generated plots. SQLite is used instead of the
 legacy filesystem tracking store, which current MLflow rejects by default.
 
+![MLflow runs for the uci-heart-disease experiment, read from the tracking database](../screenshots/mlflow_runs_table.png)
+
+The table above is rendered from the SQLite tracking database rather than from the
+MLflow web page, because the MLflow interface could not be captured legibly in the
+available browser. It lists the five active runs and their logged metrics.
+
 The joblib files are generated locally from the project's own pipeline objects and
 logged as run artifacts. They are not loaded through MLflow's sklearn flavor, avoiding
 a broad trust exception for scikit-learn's native Random Forest tree storage. As with
@@ -220,18 +226,31 @@ metrics route.
 
 The Dockerfile uses Python 3.12 slim, installs only the API runtime dependencies,
 includes the selected model, and runs as a non-root user. The image
-`heart-disease-api:local` built successfully at 691,274,093 bytes. It was run on host
+`heart-disease-api:local` built successfully at 691,290,174 bytes. It was run on host
 port 8001; health returned HTTP 200, the synthetic example returned class 0 with
 probability 0.1498261687, and metrics returned HTTP 200 with prediction and latency
 series. Container logs showed the health, prediction, and metrics requests.
+
+The API writes one `api_request` log line per request containing the method, path,
+status code, and latency in milliseconds; request bodies and patient values are not
+logged. Verifying the deployed pods showed that these lines were initially missing,
+because uvicorn does not configure application loggers. A stream handler was added to
+the API logger, the image was rebuilt, and the lines now appear in container and pod
+logs.
 
 A one-node kind v1.37.0 cluster was created with context `kind-heart-disease`. The
 image was loaded into the node, and the Kubernetes Deployment and ClusterIP Service
 were applied. The rollout completed with two of two replicas ready and no restarts.
 The Service was forwarded to host port 8002 and passed the same health, prediction,
-and metrics checks. Pod logs showed successful requests. Screenshots are in
-`screenshots/`, and the exact checks are captured in
+and metrics checks. The Swagger capture below is a real `/predict` call against the
+Kubernetes Service, and the pod-log capture is rendered from the actual `kubectl logs`
+output. The remaining captures (Docker image and container, deployment status,
+metrics, health, and the second Swagger view) are in `screenshots/` and indexed in
 `reports/local_api_evidence.md`.
+
+![Swagger /predict on the Kubernetes service: HTTP 200](../screenshots/kubernetes_swagger_predict_summary.png)
+
+![Pod request logs with status and latency (command output)](../screenshots/kubernetes_pod_logs.png)
 
 No cloud provider, registry, account, or deployment secret was supplied, so this is a
 local Kubernetes deployment, not a public-cloud deployment. The local setup also does
